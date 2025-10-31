@@ -398,7 +398,7 @@ export default function ProjectorPage() {
                 
                 {/* Animated Bid Amount */}
                 <div className="text-5xl sm:text-7xl md:text-9xl font-extrabold drop-shadow-2xl mb-4 text-yellow-400">
-                  ₹{(animatedTotals[currentProject.id] || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+                  ₹{currentProjectTotal.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
                 </div>
                 
                 {/* Progress Bar */}
@@ -499,7 +499,6 @@ export default function ProjectorPage() {
               const isCurrentPitch = eventState?.current_pitch_id === project.id;
               const rank = index + 1;
               const totalBid = project.bids?.reduce((sum, bid) => sum + bid.amount, 0) || 0;
-              const animatedTotal = animatedTotals[project.id] || 0;
               const maxBid = sortedProjects[0]?.bids?.reduce((sum, bid) => sum + bid.amount, 0) || 1;
               const percentage = (totalBid / maxBid) * 100;
               const isFlashing = flashingProjects[project.id];
@@ -580,7 +579,7 @@ export default function ProjectorPage() {
                           isCurrentPitch ? 'text-black' : 'text-yellow-400'
                         }`}
                       >
-                        ₹{Math.round(animatedTotal).toLocaleString()}
+                        ₹{totalBid.toLocaleString()}
                       </div>
                       <div className={`text-xs mt-1 flex items-center gap-1 ${isCurrentPitch ? 'text-black/70' : 'text-gray-500'}`}>
                         <FaFire className={`text-xs ${rank <= 3 ? 'text-red-500' : ''}`} />
