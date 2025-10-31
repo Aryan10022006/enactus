@@ -562,7 +562,7 @@ export default function AdminPage({ onLogout }) {
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl flex items-center justify-center shadow-lg p-2">
               <img 
-                src="/images/logo.png" 
+                src="/images/logotab.png" 
                 alt="Enactus Logo" 
                 className="w-full h-full object-contain"
                 onError={(e) => {
@@ -1033,8 +1033,8 @@ export default function AdminPage({ onLogout }) {
                 </p>
                 {timerSeconds > 0 && (
                   <div className="mt-3 flex items-center gap-2">
-                    <FaFire className="text-red-500 animate-pulse" />
-                    <span className={`text-2xl font-bold ${timerSeconds <= 10 ? 'text-red-500 animate-pulse' : 'text-yellow-400'}`}>
+                    <FaClock className="text-red-500" />
+                    <span className={`text-2xl font-bold ${timerSeconds <= 10 ? 'text-red-500' : 'text-yellow-400'}`}>
                       {Math.floor(timerSeconds / 60)}:{String(timerSeconds % 60).padStart(2, '0')}
                     </span>
                     <span className="text-sm text-gray-400">remaining</span>

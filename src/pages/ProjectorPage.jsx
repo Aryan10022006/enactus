@@ -155,7 +155,7 @@ export default function ProjectorPage() {
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-3">
             <img 
-              src="/images/logo.png" 
+              src="/images/logotab.png" 
               alt="Enactus Logo" 
               className="w-full h-full object-contain"
               onError={(e) => {
@@ -221,7 +221,7 @@ export default function ProjectorPage() {
       <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-12 text-center shadow-2xl relative overflow-hidden border-2 border-yellow-400">
         {/* Animated Background Effect */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-yellow-400 to-transparent animate-pulse"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-yellow-400 to-transparent"></div>
         </div>
         
         <div className="relative z-10">
@@ -273,12 +273,12 @@ export default function ProjectorPage() {
 
                 {/* Timer Display */}
                 {timerSeconds > 0 && (
-                  <div className="mt-6 sm:mt-8 bg-red-600 text-white rounded-2xl p-4 sm:p-6 shadow-2xl animate-pulse">
+                  <div className="mt-6 sm:mt-8 bg-red-600 text-white rounded-2xl p-4 sm:p-6 shadow-2xl border-2 border-red-400">
                     <div className="text-base sm:text-xl md:text-2xl font-bold mb-2 uppercase tracking-wider flex items-center justify-center gap-2">
-                      <FaClock className="animate-spin" />
+                      <FaClock />
                       LAST MINUTE BIDDING!
                     </div>
-                    <div className={`text-6xl sm:text-8xl md:text-9xl font-extrabold ${timerSeconds <= 10 ? 'animate-bounce' : ''}`}>
+                    <div className={`text-6xl sm:text-8xl md:text-9xl font-extrabold ${timerSeconds <= 10 ? 'text-yellow-300' : ''}`}>
                       {Math.floor(timerSeconds / 60)}:{String(timerSeconds % 60).padStart(2, '0')}
                     </div>
                     <div className="text-sm sm:text-base md:text-lg mt-2 uppercase tracking-wide">
@@ -331,13 +331,13 @@ export default function ProjectorPage() {
       <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl border border-gray-700">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-4 sm:mb-6 md:mb-8">
           <div className="flex items-center gap-2 sm:gap-3">
-            <FaTrophy className="text-2xl sm:text-3xl md:text-4xl text-yellow-400 animate-pulse" />
+            <FaTrophy className="text-2xl sm:text-3xl md:text-4xl text-yellow-400" />
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-yellow-400 text-center">LIVE LEADERBOARD</h2>
-            <FaTrophy className="text-2xl sm:text-3xl md:text-4xl text-yellow-400 animate-pulse" />
+            <FaTrophy className="text-2xl sm:text-3xl md:text-4xl text-yellow-400" />
           </div>
-          <span className="flex items-center gap-2 text-sm sm:text-base bg-red-500 text-white px-3 py-1.5 rounded-full animate-pulse font-bold">
-            <span className="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full animate-ping"></span>
-            LIVE UPDATES
+          <span className="flex items-center gap-2 text-sm sm:text-base bg-red-500 text-white px-3 py-1.5 rounded-full font-bold">
+            <span className="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full"></span>
+            LIVE
           </span>
         </div>
         
@@ -359,7 +359,7 @@ export default function ProjectorPage() {
                   key={project.id}
                   className={`relative overflow-hidden rounded-lg transition-all duration-500 ${
                     isCurrentPitch
-                      ? 'bg-yellow-400 text-black scale-105 shadow-2xl animate-pulse'
+                      ? 'bg-yellow-400 text-black scale-105 shadow-2xl border-2 border-yellow-500'
                       : isFlashing
                       ? 'bg-green-500 scale-105 shadow-2xl'
                       : 'bg-gray-900'
@@ -384,7 +384,7 @@ export default function ProjectorPage() {
                       <div
                         className={`flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full font-bold text-base sm:text-lg md:text-2xl flex-shrink-0 transform transition-transform ${
                           rank === 1
-                            ? 'bg-yellow-500 text-black scale-110 animate-bounce'
+                            ? 'bg-yellow-500 text-black scale-110'
                             : rank === 2
                             ? 'bg-gray-400 text-black scale-105'
                             : rank === 3
@@ -407,8 +407,8 @@ export default function ProjectorPage() {
                           </div>
                         )}
                         {isCurrentPitch && (
-                          <div className="text-xs sm:text-sm font-medium mt-1 uppercase tracking-wide flex items-center gap-1 animate-pulse">
-                            <FaMicrophone className="text-xs animate-bounce" />
+                          <div className="text-xs sm:text-sm font-medium mt-1 uppercase tracking-wide flex items-center gap-1 text-black/70">
+                            <FaMicrophone className="text-xs" />
                             Currently Pitching
                           </div>
                         )}
@@ -433,7 +433,7 @@ export default function ProjectorPage() {
                         ₹{Math.round(animatedTotal).toLocaleString()}
                       </div>
                       <div className={`text-xs mt-1 flex items-center gap-1 ${isCurrentPitch ? 'text-black/70' : 'text-gray-500'}`}>
-                        <FaFire className={`text-xs ${rank <= 3 ? 'text-red-500 animate-pulse' : ''}`} />
+                        <FaFire className={`text-xs ${rank <= 3 ? 'text-red-500' : ''}`} />
                         {project.bids?.length || 0} {project.bids?.length === 1 ? 'bid' : 'bids'}
                       </div>
                     </div>

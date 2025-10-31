@@ -64,7 +64,7 @@ const newUsers = users.filter((u) => u.wallet === 0 && !u.hasReceivedWallet);
 - All UI uses FaIcon components
 
 ### 2. **Premium Logo Implementation**
-✅ Logo from `/public/images/logo.png`:
+✅ Logo from `/public/images/logotab.png`:
 - Gradient background (yellow-400 to yellow-500)
 - Rounded corners with shadow
 - Hover scale effect
@@ -352,7 +352,7 @@ if (!user.hasReceivedWallet) {
 
 **Next Steps:**
 1. Fix Firebase permissions (see FIX_PERMISSIONS_NOW.md)
-2. Add logo to `public/images/logo.png`
+2. Add logo to `public/images/logotab.png`
 3. Test with real users
 4. Deploy to production
 

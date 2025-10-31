@@ -155,7 +155,7 @@ function TeamMemberPage({ onLogout }) {
             <div className="flex justify-center mb-4">
               <div className="w-24 h-24 sm:w-28 sm:h-28 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-5">
                 <img 
-                  src="/images/logo.png" 
+                  src="/images/logotab.png" 
                   alt="Enactus Logo" 
                   className="w-full h-full object-contain"
                   onError={(e) => {
@@ -215,7 +215,7 @@ function TeamMemberPage({ onLogout }) {
           <div className="bg-gray-800 rounded-xl shadow-2xl p-6 sm:p-8 border border-yellow-400/20">
             <div className="text-center">
               <img 
-                src="/images/logo.png" 
+                src="/images/logotab.png" 
                 alt="Enactus Logo" 
                 className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full shadow-lg"
                 onError={(e) => {
@@ -242,7 +242,10 @@ function TeamMemberPage({ onLogout }) {
               <p className="text-gray-400 text-sm sm:text-base mb-4">
                 Waiting for the event to begin and pitches to start...
               </p>
-              <div className="animate-pulse text-yellow-400 text-sm sm:text-base">⏳ Please wait...</div>
+              <div className="text-yellow-400 text-sm sm:text-base flex items-center gap-2">
+                <FaClock />
+                Please wait...
+              </div>
             </div>
 
             <button
@@ -268,7 +271,7 @@ function TeamMemberPage({ onLogout }) {
           <div className="bg-gray-800 rounded-xl shadow-2xl p-6 sm:p-8 border border-gray-700">
             <div className="text-center">
               <img 
-                src="/images/logo.png" 
+                src="/images/logotab.png" 
                 alt="Enactus Logo" 
                 className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full shadow-lg"
                 onError={(e) => {
@@ -321,7 +324,7 @@ function TeamMemberPage({ onLogout }) {
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl flex items-center justify-center shadow-lg p-2">
                 <img 
-                  src="/images/logo.png" 
+                  src="/images/logotab.png" 
                   alt="Enactus Logo" 
                   className="w-full h-full object-contain"
                   onError={(e) => {
@@ -421,8 +424,8 @@ function TeamMemberPage({ onLogout }) {
             <h3 className="text-lg sm:text-xl font-bold text-white mb-4 flex items-center gap-2">
               <FaTrophy className="text-yellow-400" />
               Current Bids
-              <span className="ml-auto flex items-center gap-1 text-xs bg-red-500 text-white px-2 py-1 rounded-full animate-pulse">
-                <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
+              <span className="ml-auto flex items-center gap-1 text-xs bg-red-500 text-white px-2 py-1 rounded-full font-bold">
+                <span className="w-2 h-2 bg-white rounded-full"></span>
                 LIVE
               </span>
             </h3>

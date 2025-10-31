@@ -20,7 +20,7 @@
   - ✅ Attendee registration
   - ✅ Projector display
 - Automatic fallback to "E" letter if logo missing
-- Place logo at: `public/images/logo.png`
+- Place logo at: `public/images/logotab.png`
 
 #### Enhanced UI Elements
 - **Gradient Backgrounds**: Modern gradient overlays
@@ -162,7 +162,7 @@ Files with logo references:
 
 Change:
 ```jsx
-<img src="/images/logo.png" />
+<img src="/images/logotab.png" />
 ```
 
 #### Change Colors
@@ -217,4 +217,4 @@ No password needed - display on main screen
 
 **The app is now production-ready with a professional, branded UI!** 🎉
 
-Place your logo at `public/images/logo.png` and restart the server to see it in action.
+Place your logo at `public/images/logotab.png` and restart the server to see it in action.

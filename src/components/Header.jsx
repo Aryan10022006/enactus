@@ -11,7 +11,7 @@ export default function Header() {
         {/* Logo with premium styling */}
         <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-3">
           <img 
-            src="/images/logo.png" 
+            src="/images/logotab.png" 
             alt="Enactus Logo" 
             className="w-full h-full object-contain"
             onError={(e) => {

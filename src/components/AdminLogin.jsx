@@ -32,7 +32,7 @@ export default function AdminLogin({ onLogin }) {
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-28 h-28 bg-white rounded-2xl mb-4 shadow-2xl p-5">
             <img 
-              src="/images/logo.png" 
+              src="/images/logotab.png" 
               alt="Enactus Logo" 
               className="w-full h-full object-contain"
               onError={(e) => {

@@ -203,7 +203,7 @@ npm run build
 
 ## Important Notes
 
-1. **Logo:** Logo file exists at `public/images/logo.png`
+1. **Logo:** Logo file exists at `public/images/logotab.png`
 2. **Firebase:** Already configured with your credentials
 3. **Authentication:** Anonymous auth must be enabled in Firebase
 4. **Firestore Rules:** Update security rules for production

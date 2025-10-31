@@ -7,7 +7,7 @@
 - [ ] Firestore database initialized
 - [ ] Anonymous authentication enabled
 - [ ] Security rules configured
-- [ ] Logo added to `public/images/logo.png`
+- [ ] Logo added to `public/images/logotab.png`
 - [ ] Environment variables set
 
 ---
@@ -86,10 +86,10 @@ const firebaseConfig = {
 
 ## 3️⃣ Add Logo
 
-1. Place your Enactus logo at: `public/images/logo.png`
+1. Place your Enactus logo at: `public/images/logotab.png`
 2. Recommended size: 512x512px or larger
 3. Format: PNG with transparent background
-4. File name must be exactly: `logo.png` (lowercase)
+4. File name must be exactly: `logotab.png` (lowercase)
 
 ---
 
@@ -352,7 +352,7 @@ npm run build
 
 ### Issue: Logo not showing
 **Solution:** 
-- Verify file at `public/images/logo.png`
+- Verify file at `public/images/logotab.png`
 - Check filename is lowercase
 - Clear browser cache
 

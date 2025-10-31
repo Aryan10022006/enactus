@@ -48,7 +48,7 @@ Your Enactus Bidding App is fully configured and ready for production deployment
 
 ### Step 2: Customize (2 minutes)
 ```bash
-# 1. Add logo to: public/images/logo.png
+# 1. Add logo to: public/images/logotab.png
 # 2. Change admin password in: src/components/AdminLogin.jsx (line 14)
 # 3. Change team code in: src/components/TeamMemberLogin.jsx (line 14)
 ```
@@ -275,7 +275,7 @@ npm start
 enactus-bidding-app/
 ├── public/
 │   ├── images/
-│   │   └── logo.png          ← ADD YOUR LOGO HERE
+│   │   └── logotab.png          ← ADD YOUR LOGO HERE
 │   ├── index.html
 │   └── manifest.json
 ├── src/
@@ -326,7 +326,7 @@ enactus-bidding-app/
 - [ ] Firebase config in `src/firebase.js`
 - [ ] Admin password changed
 - [ ] Team code changed
-- [ ] Logo added to `public/images/logo.png`
+- [ ] Logo added to `public/images/logotab.png`
 
 ### Recommended
 - [ ] Test locally with `npm start`

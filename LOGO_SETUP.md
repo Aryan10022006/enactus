@@ -10,10 +10,10 @@ To use your Enactus logo in the application:
    ```
    public/
    └── images/
-       └── logo.png
+       └── logotab.png
    ```
 
-2. Place your Enactus logo file (PNG format recommended) as `logo.png`
+2. Place your Enactus logo file (PNG format recommended) as `logotab.png`
 
 ### Option 2: Use a different path
 
@@ -27,12 +27,12 @@ If your logo is in a different location, update the image source in these files:
 
 Change:
 ```jsx
-<img src="/images/logo.png" alt="Enactus Logo" />
+<img src="/images/logotab.png" alt="Enactus Logo" />
 ```
 
 To your logo path, for example:
 ```jsx
-<img src="/assets/enactus-logo.png" alt="Enactus Logo" />
+<img src="/assets/enactus-logotab.png" alt="Enactus Logo" />
 ```
 
 ### Option 3: Use a fallback letter
@@ -82,7 +82,7 @@ After adding the logo and starting the app:
 
 ## Testing the Logo
 
-1. Place your logo at `public/images/logo.png`
+1. Place your logo at `public/images/logotab.png`
 2. Run `npm start`
 3. Check these pages:
    - Admin login page (before entering password)

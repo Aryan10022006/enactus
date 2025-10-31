@@ -24,7 +24,7 @@ function TeamMemberLogin({ onLogin }) {
         {/* Logo */}
         <div className="text-center mb-8">
           <img 
-            src="/images/logo.png" 
+            src="/images/logotab.png" 
             alt="Enactus Logo" 
             className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 rounded-full shadow-lg"
             onError={(e) => {

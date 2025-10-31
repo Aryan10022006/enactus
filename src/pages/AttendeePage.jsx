@@ -187,7 +187,7 @@ export default function AttendeePage() {
           <div className="flex justify-center mb-6">
             <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-4">
               <img 
-                src="/images/logo.png" 
+                src="/images/logotab.png" 
                 alt="Enactus Logo" 
                 className="w-full h-full object-contain"
                 onError={(e) => {
@@ -239,7 +239,7 @@ export default function AttendeePage() {
       <div className="max-w-lg mx-auto px-4">
         <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 text-center border border-gray-700">
           <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-4 animate-pulse">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-4">
               <img 
                 src="/images/logo.png" 
                 alt="Enactus Logo" 
@@ -268,7 +268,7 @@ export default function AttendeePage() {
       <div className="max-w-lg mx-auto px-4">
         <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 text-center border border-gray-700">
           <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-4 animate-pulse">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-4">
               <FaClock className="text-4xl sm:text-5xl text-yellow-400" />
             </div>
           </div>
@@ -391,8 +391,8 @@ export default function AttendeePage() {
             <h3 className="text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2">
               <FaTrophy className="text-yellow-400" />
               Current Bids
-              <span className="ml-auto flex items-center gap-1 text-xs bg-red-500 text-white px-2 py-1 rounded-full animate-pulse">
-                <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
+              <span className="ml-auto flex items-center gap-1 text-xs bg-red-500 text-white px-2 py-1 rounded-full font-bold">
+                <span className="w-2 h-2 bg-white rounded-full"></span>
                 LIVE
               </span>
             </h3>

@@ -15,7 +15,7 @@ Password: enactus2025
 
 ## Logo Location
 ```
-public/images/logo.png
+public/images/logotab.png
 (500x500px PNG with transparent background)
 ```
 
@@ -102,7 +102,7 @@ Ctrl+Shift+R - Hard refresh (clear cache)
 
 ## Quick Troubleshoot
 ```
-Logo not showing → Check: public/images/logo.png
+Logo not showing → Check: public/images/logotab.png
 Admin locked out → Password: enactus2025 (lowercase)
 Firestore error → Check Firebase config in src/firebase.js
 Bids not updating → Check internet + browser console (F12)
@@ -111,7 +111,7 @@ Bids not updating → Check internet + browser console (F12)
 ## Pre-Event Checklist
 ```
 ☑ Firebase configured
-☑ Logo added (public/images/logo.png)
+☑ Logo added (public/images/logotab.png)
 ☑ Team members pre-registered
 ☑ Admin password set
 ☑ All views tested

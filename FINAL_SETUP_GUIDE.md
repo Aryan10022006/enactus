@@ -36,7 +36,7 @@
 Enactus/
 ├── public/
 │   ├── images/
-│   │   ├── logo.png              ← ADD YOUR LOGO HERE
+│   │   ├── logotab.png              ← ADD YOUR LOGO HERE
 │   │   └── README.txt
 │   └── index.html
 │
@@ -88,7 +88,7 @@ npm install
 
 ### 2. Add Your Logo
 ```
-1. Place your Enactus logo at: public/images/logo.png
+1. Place your Enactus logo at: public/images/logotab.png
 2. Recommended: PNG format, 500x500px, transparent background
 3. If you don't add a logo, a yellow "E" will show as fallback
 ```
@@ -240,7 +240,7 @@ http://localhost:3000/#/projector
 - **Share carefully**: Only give to authorized personnel
 
 ### Logo Placement
-- **Location**: `public/images/logo.png`
+- **Location**: `public/images/logotab.png`
 - **Format**: PNG with transparent background
 - **Size**: 500x500 pixels recommended
 - **Fallback**: Yellow circle with "E" if logo missing
@@ -251,7 +251,7 @@ http://localhost:3000/#/projector
 
 ### Before Event (Setup)
 1. ✅ Configure Firebase (done)
-2. ✅ Add logo to `public/images/logo.png`
+2. ✅ Add logo to `public/images/logotab.png`
 3. ✅ Pre-register team members in Firestore
 4. ✅ Test all three views
 
@@ -341,8 +341,8 @@ Winner = Highest total bid!
 
 ### Logo Not Showing
 ```
-1. Check file exists: public/images/logo.png
-2. Check filename is exactly: logo.png (lowercase)
+1. Check file exists: public/images/logotab.png
+2. Check filename is exactly: logotab.png (lowercase)
 3. Clear browser cache (Ctrl+Shift+R)
 4. Check browser console (F12) for errors
 ```
@@ -418,7 +418,7 @@ colors: {
 - [ ] Anonymous auth enabled
 - [ ] Firestore database created
 - [ ] Security rules published
-- [ ] Logo added to `public/images/logo.png`
+- [ ] Logo added to `public/images/logotab.png`
 - [ ] Admin password changed (optional)
 - [ ] Budget amount configured
 - [ ] Team members pre-registered in Firestore
@@ -443,7 +443,7 @@ Your Enactus Orientation bidding app is now:
 ✅ **Professional** - Production-ready  
 
 ### Next Steps:
-1. Add your logo to `public/images/logo.png`
+1. Add your logo to `public/images/logotab.png`
 2. Run `npm start`
 3. Test all three views
 4. Share admin URL (secretly) with organizers

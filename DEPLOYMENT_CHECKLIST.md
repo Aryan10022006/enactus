@@ -16,7 +16,7 @@
 - [ ] API keys secured
 
 ### 3. Assets
-- [ ] Logo added to `public/images/logo.png`
+- [ ] Logo added to `public/images/logotab.png`
 - [ ] Logo file size optimized (<500KB)
 - [ ] Logo displays correctly on all pages
 
@@ -179,7 +179,7 @@ firebase deploy
 ```
 
 ### Logo Not Showing
-- Check file exists: `public/images/logo.png`
+- Check file exists: `public/images/logotab.png`
 - Check filename is lowercase
 - Clear browser cache
 - Redeploy
