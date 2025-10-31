@@ -130,6 +130,50 @@ export default function AttendeePage() {
     }
   };
 
+  const handleRemoveBid = async (projectId) => {
+    if (!window.confirm('Are you sure you want to remove your bid? Your funds will be returned to your wallet.')) {
+      return;
+    }
+
+    try {
+      setProcessing(true);
+      setBidErrors(prev => ({ ...prev, [projectId]: '' }));
+
+      await runTransaction(db, async (transaction) => {
+        const userRef = doc(db, `${getEventPath()}/users/${userId}`);
+        const projectRef = doc(db, `${getEventPath()}/projects/${projectId}`);
+
+        const userDoc = await transaction.get(userRef);
+        const projectDoc = await transaction.get(projectRef);
+
+        if (!userDoc.exists() || !projectDoc.exists()) {
+          throw new Error('Document not found');
+        }
+
+        const currentWallet = userDoc.data().wallet;
+        const currentBids = projectDoc.data().bids || [];
+        const existingBidIndex = currentBids.findIndex(b => b.userId === userId);
+
+        if (existingBidIndex >= 0) {
+          const refundAmount = currentBids[existingBidIndex].amount;
+          currentBids.splice(existingBidIndex, 1); // Remove the bid
+          
+          transaction.update(userRef, {
+            wallet: currentWallet + refundAmount,
+          });
+          transaction.update(projectRef, { bids: currentBids });
+        }
+      });
+
+      setBidAmounts(prev => ({ ...prev, [projectId]: '' }));
+    } catch (error) {
+      console.error('Error removing bid:', error);
+      setBidErrors(prev => ({ ...prev, [projectId]: 'Failed to remove bid. Try again.' }));
+    } finally {
+      setProcessing(false);
+    }
+  };
+
   if (stateLoading || userLoading) {
     return <LoadingSpinner message="Loading..." />;
   }
@@ -325,10 +369,19 @@ export default function AttendeePage() {
                 <button
                   onClick={() => handlePlaceBid(currentProject.id)}
                   disabled={processing || !bidAmounts[currentProject.id] || parseInt(bidAmounts[currentProject.id]) <= 0}
-                  className="w-full sm:w-auto px-6 py-3 sm:py-4 bg-yellow-400 text-black rounded-lg font-bold text-base sm:text-lg hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors min-h-[44px] whitespace-nowrap"
+                  className="sm:w-auto px-6 py-3 sm:py-4 bg-yellow-400 text-black rounded-lg font-bold text-base sm:text-lg hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors min-h-[44px] whitespace-nowrap"
                 >
                   {processing ? 'Placing...' : userBid ? 'Update Bid' : 'Place Bid'}
                 </button>
+                {userBid && (
+                  <button
+                    onClick={() => handleRemoveBid(currentProject.id)}
+                    disabled={processing}
+                    className="sm:w-auto px-6 py-3 sm:py-4 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors min-h-[44px] whitespace-nowrap"
+                  >
+                    Remove Bid
+                  </button>
+                )}
               </div>
             </div>
           </div>

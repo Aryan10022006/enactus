@@ -103,6 +103,46 @@ function TeamMemberPage({ onLogout }) {
     }
   };
 
+  const handleRemoveBid = async (projectId) => {
+    if (!window.confirm('Are you sure you want to remove your bid? Your funds will be returned to your wallet.')) {
+      return;
+    }
+
+    try {
+      await runTransaction(db, async (transaction) => {
+        const userRef = doc(db, `${getEventPath()}/users/${userId}`);
+        const projectRef = doc(db, `${getEventPath()}/projects/${projectId}`);
+
+        const userDoc = await transaction.get(userRef);
+        const projectDoc = await transaction.get(projectRef);
+
+        if (!userDoc.exists() || !projectDoc.exists()) {
+          throw new Error('Document not found');
+        }
+
+        const currentWallet = userDoc.data().wallet;
+        const currentBids = projectDoc.data().bids || [];
+        const existingBidIndex = currentBids.findIndex(b => b.userId === userId);
+
+        if (existingBidIndex >= 0) {
+          const refundAmount = currentBids[existingBidIndex].amount;
+          currentBids.splice(existingBidIndex, 1); // Remove the bid
+          
+          transaction.update(userRef, {
+            wallet: currentWallet + refundAmount,
+          });
+          transaction.update(projectRef, { bids: currentBids });
+        }
+      });
+
+      setBidAmounts(prev => ({ ...prev, [projectId]: '' }));
+      setBidErrors(prev => ({ ...prev, [projectId]: '' }));
+    } catch (err) {
+      setBidErrors(prev => ({ ...prev, [projectId]: 'Failed to remove bid. Try again.' }));
+      console.error(err);
+    }
+  };
+
   if (stateLoading || userLoading) {
     return <LoadingSpinner />;
   }
@@ -349,8 +389,16 @@ function TeamMemberPage({ onLogout }) {
                 onClick={() => handleBid(currentProject.id)}
                 className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all transform hover:scale-105 shadow-lg text-base sm:text-lg whitespace-nowrap min-h-[44px]"
               >
-                Place Bid
+                {userBid ? 'Update Bid' : 'Place Bid'}
               </button>
+              {userBid && (
+                <button
+                  onClick={() => handleRemoveBid(currentProject.id)}
+                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-lg transition-all shadow-lg text-base sm:text-lg whitespace-nowrap min-h-[44px]"
+                >
+                  Remove Bid
+                </button>
+              )}
             </div>
             {bidErrors[currentProject.id] && (
               <p className="mt-2 text-red-400 text-sm">{bidErrors[currentProject.id]}</p>

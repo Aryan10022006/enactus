@@ -2,12 +2,12 @@
 // Admin panel for managing the event, registration, and pitches
 
 import React, { useState, useEffect, useRef } from 'react';
-import { doc, updateDoc, addDoc, collection, getDocs, writeBatch, deleteDoc } from 'firebase/firestore';
+import { doc, updateDoc, addDoc, collection, getDocs, writeBatch, deleteDoc, getDoc } from 'firebase/firestore';
 import { db, getEventPath, TOTAL_BUDGET, TEAM_BUDGET_PERCENTAGE } from '../firebase';
 import { useEventState } from '../hooks/useEventState';
 import { useProjects } from '../hooks/useProjects';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { FaUsers, FaWallet, FaChartLine, FaDoorOpen, FaUserCheck, FaClipboardList, FaPlay, FaStop, FaPlusCircle, FaTrophy, FaTrash, FaUndo, FaUserShield } from 'react-icons/fa';
+import { FaUsers, FaWallet, FaChartLine, FaDoorOpen, FaUserCheck, FaClipboardList, FaPlay, FaStop, FaPlusCircle, FaTrophy, FaTrash, FaUndo, FaUserShield, FaClock, FaFire } from 'react-icons/fa';
 
 export default function AdminPage({ onLogout }) {
   const { eventState, loading: stateLoading } = useEventState();
@@ -20,6 +20,8 @@ export default function AdminPage({ onLogout }) {
   const [totalBudget, setTotalBudget] = useState(TOTAL_BUDGET);
   const [teamPercentage, setTeamPercentage] = useState(TEAM_BUDGET_PERCENTAGE * 100);
   const closeTimerRef = useRef(null);
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const timerIntervalRef = useRef(null);
 
   // Fetch users for team member management
   useEffect(() => {
@@ -53,6 +55,14 @@ export default function AdminPage({ onLogout }) {
         registration_open: false,
         registration_expires_at: null
       }).catch((err) => console.error('Error auto-closing registration:', err));
+    }
+
+    // Sync timer with database
+    if (eventState.timer_active && eventState.timer_end_time) {
+      const remaining = Math.max(0, Math.floor((eventState.timer_end_time - Date.now()) / 1000));
+      setTimerSeconds(remaining);
+    } else {
+      setTimerSeconds(0);
     }
   }, [eventState]);
 
@@ -398,13 +408,140 @@ export default function AdminPage({ onLogout }) {
       setStatusMessage('Ending current pitch...');
 
       await updateDoc(doc(db, `${getEventPath()}/state/state`), {
-        current_pitch_id: null
+        current_pitch_id: null,
+        timer_active: false,
+        timer_end_time: null
       });
+
+      // Clear local timer
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+      setTimerSeconds(0);
 
       setStatusMessage('Pitch ended successfully.');
     } catch (error) {
       console.error('Error ending pitch:', error);
       setStatusMessage('Error ending pitch: ' + error.message);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const startTimer = async () => {
+    try {
+      if (!eventState?.current_pitch_id) {
+        setStatusMessage('Please start a pitch first before starting the timer.');
+        return;
+      }
+
+      const endTime = Date.now() + 60000; // 60 seconds from now
+      await updateDoc(doc(db, `${getEventPath()}/state/state`), {
+        timer_active: true,
+        timer_end_time: endTime
+      });
+
+      setTimerSeconds(60);
+      
+      // Local countdown for immediate feedback
+      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = setInterval(() => {
+        setTimerSeconds(prev => {
+          if (prev <= 1) {
+            clearInterval(timerIntervalRef.current);
+            timerIntervalRef.current = null;
+            // Auto-stop timer in database
+            updateDoc(doc(db, `${getEventPath()}/state/state`), {
+              timer_active: false,
+              timer_end_time: null
+            }).catch(err => console.error(err));
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      setStatusMessage('Timer started! 60 seconds for last-minute bids.');
+    } catch (error) {
+      console.error('Error starting timer:', error);
+      setStatusMessage('Error starting timer: ' + error.message);
+    }
+  };
+
+  const stopTimer = async () => {
+    try {
+      await updateDoc(doc(db, `${getEventPath()}/state/state`), {
+        timer_active: false,
+        timer_end_time: null
+      });
+
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+      setTimerSeconds(0);
+
+      setStatusMessage('Timer stopped.');
+    } catch (error) {
+      console.error('Error stopping timer:', error);
+      setStatusMessage('Error stopping timer: ' + error.message);
+    }
+  };
+
+  const deleteProject = async (projectId, projectName) => {
+    if (!window.confirm(`Are you sure you want to delete "${projectName}"?\n\nThis will:\n- Remove the project\n- Return all bid amounts to users' wallets\n- Cannot be undone!`)) {
+      return;
+    }
+
+    try {
+      setProcessing(true);
+      setStatusMessage(`Deleting project "${projectName}"...`);
+
+      // Get project data to return bids
+      const projectRef = doc(db, `${getEventPath()}/projects/${projectId}`);
+      const projectDoc = await getDoc(projectRef);
+      
+      if (projectDoc.exists()) {
+        const projectData = projectDoc.data();
+        const bids = projectData.bids || [];
+
+        // Return money to all bidders
+        if (bids.length > 0) {
+          const batch = writeBatch(db);
+          
+          for (const bid of bids) {
+            const userRef = doc(db, `${getEventPath()}/users/${bid.userId}`);
+            const userDoc = await getDoc(userRef);
+            
+            if (userDoc.exists()) {
+              const currentWallet = userDoc.data().wallet || 0;
+              batch.update(userRef, {
+                wallet: currentWallet + bid.amount
+              });
+            }
+          }
+          
+          await batch.commit();
+        }
+
+        // Delete the project
+        await deleteDoc(projectRef);
+
+        // If this was the current pitch, end it
+        if (eventState?.current_pitch_id === projectId) {
+          await updateDoc(doc(db, `${getEventPath()}/state/state`), {
+            current_pitch_id: null,
+            timer_active: false,
+            timer_end_time: null
+          });
+        }
+
+        setStatusMessage(`Project "${projectName}" deleted successfully. All bids returned to users.`);
+      }
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      setStatusMessage('Error deleting project: ' + error.message);
     } finally {
       setProcessing(false);
     }
@@ -795,18 +932,29 @@ export default function AdminPage({ onLogout }) {
                         Total: ₹{totalBid.toLocaleString()} • {sortedBids.length} {sortedBids.length === 1 ? 'bid' : 'bids'}
                       </div>
                     </div>
-                    <button
-                      onClick={() => startPitch(project.id, project.name)}
-                      disabled={processing || eventState?.current_pitch_id === project.id}
-                      className={`w-full sm:w-auto px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 text-sm sm:text-base min-h-[44px] ${
-                        eventState?.current_pitch_id === project.id
-                          ? 'bg-black text-yellow-400 cursor-not-allowed'
-                          : 'bg-yellow-400 text-black hover:bg-yellow-500'
-                      } disabled:opacity-50`}
-                    >
-                      <FaPlay />
-                      {eventState?.current_pitch_id === project.id ? 'Currently Pitching' : 'Start Pitch'}
-                    </button>
+                    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                      <button
+                        onClick={() => startPitch(project.id, project.name)}
+                        disabled={processing || eventState?.current_pitch_id === project.id}
+                        className={`px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 text-sm sm:text-base min-h-[44px] ${
+                          eventState?.current_pitch_id === project.id
+                            ? 'bg-black text-yellow-400 cursor-not-allowed'
+                            : 'bg-yellow-400 text-black hover:bg-yellow-500'
+                        } disabled:opacity-50`}
+                      >
+                        <FaPlay />
+                        {eventState?.current_pitch_id === project.id ? 'Currently Pitching' : 'Start Pitch'}
+                      </button>
+                      <button
+                        onClick={() => deleteProject(project.id, project.name)}
+                        disabled={processing}
+                        className="px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 text-sm sm:text-base min-h-[44px] disabled:opacity-50"
+                        title="Delete Project"
+                      >
+                        <FaTrash />
+                        Delete
+                      </button>
+                    </div>
                   </div>
 
                   {/* Bid Details - Show who bid what */}
@@ -871,7 +1019,49 @@ export default function AdminPage({ onLogout }) {
         </div>
 
         {/* End Pitch Button */}
-        <div className="mt-6">
+        <div className="mt-6 space-y-4">
+          {/* Timer Control */}
+          <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg font-semibold text-white flex items-center gap-2 mb-2">
+                  <FaClock className="text-yellow-400" />
+                  Last-Minute Bidding Timer
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-400">
+                  Start a 60-second countdown for final bids. Timer will show on projector.
+                </p>
+                {timerSeconds > 0 && (
+                  <div className="mt-3 flex items-center gap-2">
+                    <FaFire className="text-red-500 animate-pulse" />
+                    <span className={`text-2xl font-bold ${timerSeconds <= 10 ? 'text-red-500 animate-pulse' : 'text-yellow-400'}`}>
+                      {Math.floor(timerSeconds / 60)}:{String(timerSeconds % 60).padStart(2, '0')}
+                    </span>
+                    <span className="text-sm text-gray-400">remaining</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <button
+                  onClick={startTimer}
+                  disabled={processing || !eventState?.current_pitch_id || eventState?.timer_active}
+                  className="flex-1 sm:flex-none px-4 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 text-sm sm:text-base min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <FaClock />
+                  Start Timer
+                </button>
+                <button
+                  onClick={stopTimer}
+                  disabled={processing || !eventState?.timer_active}
+                  className="flex-1 sm:flex-none px-4 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2 text-sm sm:text-base min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <FaStop />
+                  Stop Timer
+                </button>
+              </div>
+            </div>
+          </div>
+
           <button
             onClick={endPitch}
             disabled={processing || !eventState?.current_pitch_id}

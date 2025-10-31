@@ -13,6 +13,8 @@ export default function ProjectorPage() {
   const [animatedTotals, setAnimatedTotals] = useState({});
   const [flashingProjects, setFlashingProjects] = useState({});
   const [previousBidCounts, setPreviousBidCounts] = useState({});
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [recentBids, setRecentBids] = useState([]);
 
   // Get current project
   const currentProject = useMemo(() => {
@@ -106,6 +108,39 @@ export default function ProjectorPage() {
 
     return () => intervals.forEach(interval => clearInterval(interval));
   }, [projects, previousBidCounts]);
+
+  // Timer countdown effect
+  useEffect(() => {
+    if (eventState?.timer_active && eventState?.timer_end_time) {
+      const updateTimer = () => {
+        const remaining = Math.max(0, Math.floor((eventState.timer_end_time - Date.now()) / 1000));
+        setTimerSeconds(remaining);
+        
+        if (remaining === 0) {
+          clearInterval(timerInterval);
+        }
+      };
+
+      updateTimer();
+      const timerInterval = setInterval(updateTimer, 100);
+      return () => clearInterval(timerInterval);
+    } else {
+      setTimerSeconds(0);
+    }
+  }, [eventState?.timer_active, eventState?.timer_end_time]);
+
+  // Track recent bids for live activity feed
+  useEffect(() => {
+    if (currentProject) {
+      const bids = currentProject.bids || [];
+      const sorted = [...bids].sort((a, b) => 
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      );
+      setRecentBids(sorted.slice(0, 5)); // Keep last 5 bids
+    } else {
+      setRecentBids([]);
+    }
+  }, [currentProject]);
 
   if (stateLoading || projectsLoading) {
     return <LoadingSpinner message="Loading projector view..." />;
@@ -232,7 +267,53 @@ export default function ProjectorPage() {
                   <FaFire className="text-red-600 animate-pulse" />
                   {currentProject.bids?.length || 0} {currentProject.bids?.length === 1 ? 'bid' : 'bids'} placed
                 </div>
+
+                {/* Timer Display */}
+                {timerSeconds > 0 && (
+                  <div className="mt-6 sm:mt-8 bg-red-600 text-white rounded-2xl p-4 sm:p-6 shadow-2xl animate-pulse">
+                    <div className="text-base sm:text-xl md:text-2xl font-bold mb-2 uppercase tracking-wider flex items-center justify-center gap-2">
+                      <FaClock className="animate-spin" />
+                      LAST MINUTE BIDDING!
+                    </div>
+                    <div className={`text-6xl sm:text-8xl md:text-9xl font-extrabold ${timerSeconds <= 10 ? 'animate-bounce' : ''}`}>
+                      {Math.floor(timerSeconds / 60)}:{String(timerSeconds % 60).padStart(2, '0')}
+                    </div>
+                    <div className="text-sm sm:text-base md:text-lg mt-2 uppercase tracking-wide">
+                      Place your bids now!
+                    </div>
+                  </div>
+                )}
               </div>
+
+              {/* Live Bidding Activity */}
+              {recentBids.length > 0 && (
+                <div className="mt-6 border-t-2 border-black/20 pt-6">
+                  <div className="text-base sm:text-lg md:text-xl font-bold mb-4 uppercase tracking-wide flex items-center justify-center gap-2">
+                    <FaFire className="text-red-600 animate-pulse" />
+                    Recent Bids
+                  </div>
+                  <div className="space-y-2 max-w-2xl mx-auto">
+                    {recentBids.map((bid, index) => (
+                      <div 
+                        key={`${bid.userId}-${bid.timestamp}`}
+                        className="bg-black/10 rounded-lg p-3 flex items-center justify-between animate-slideInUp"
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">👤</span>
+                          <div>
+                            <div className="font-bold text-sm sm:text-base">{bid.userName}</div>
+                            {bid.isTeamMember && (
+                              <span className="text-xs bg-black text-yellow-400 px-2 py-0.5 rounded">Team</span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-xl sm:text-2xl font-bold">₹{bid.amount.toLocaleString()}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <>
