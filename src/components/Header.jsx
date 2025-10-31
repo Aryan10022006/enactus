@@ -9,7 +9,7 @@ export default function Header() {
     <header className="flex flex-col sm:flex-row items-center justify-between mb-4 sm:mb-8 pb-4 sm:pb-6 border-b border-gray-700 gap-4 animate-fadeIn">
       <div className="flex items-center gap-3 sm:gap-4">
         {/* Logo with premium styling */}
-        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-3 transform hover:scale-110 transition-transform duration-300">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-3">
           <img 
             src="/images/logo.png" 
             alt="Enactus Logo" 
@@ -22,7 +22,7 @@ export default function Header() {
           />
         </div>
         <div className="text-center sm:text-left">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold gradient-text text-shadow">Enactus Orientation</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">Enactus Orientation</h1>
           <p className="text-xs sm:text-sm text-gray-400 mt-1">Live Bidding Platform • 2025</p>
         </div>
       </div>

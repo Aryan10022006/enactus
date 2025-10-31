@@ -301,36 +301,36 @@ export default function AttendeePage() {
   return (
     <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 px-4">
       {/* User Info Card */}
-      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-2xl">
+      <div className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-2xl border border-yellow-400/30">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-black rounded-full flex items-center justify-center shadow-lg">
-              <FaUser className="text-xl sm:text-3xl text-yellow-400" />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
+              <FaUser className="text-xl sm:text-3xl text-black" />
             </div>
             <div className="text-center sm:text-left">
-              <div className="text-black font-bold text-lg sm:text-xl">{userData.name}</div>
-              <div className="text-xs sm:text-sm text-black text-opacity-70">Attendee</div>
+              <div className="text-white font-bold text-lg sm:text-xl">{userData.name}</div>
+              <div className="text-xs sm:text-sm text-gray-400">Attendee</div>
             </div>
           </div>
           <div className="text-center sm:text-right">
-            <div className="text-xs sm:text-sm text-black text-opacity-70 flex items-center justify-center sm:justify-end gap-1">
+            <div className="text-xs sm:text-sm text-gray-400 flex items-center justify-center sm:justify-end gap-1">
               <FaWallet />
               Your Wallet
             </div>
-            <div className="text-3xl sm:text-4xl font-bold text-black">₹{userData.wallet?.toLocaleString() || 0}</div>
+            <div className="text-3xl sm:text-4xl font-bold text-yellow-400">₹{userData.wallet?.toLocaleString() || 0}</div>
           </div>
         </div>
       </div>
 
       {/* Bidding Area */}
       {currentProject ? (
-        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-2xl border border-yellow-400">
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-2xl border border-yellow-400/30">
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-2">
               <FaChartLine className="text-lg sm:text-2xl text-yellow-400" />
               <h3 className="text-xs sm:text-sm text-yellow-400 font-bold uppercase tracking-wider">Now Pitching</h3>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-yellow-400 mb-2">{currentProject.name}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">{currentProject.name}</h2>
             {currentProject.description && (
               <p className="text-sm sm:text-base text-gray-300 mb-4">{currentProject.description}</p>
             )}
@@ -342,8 +342,8 @@ export default function AttendeePage() {
                   <FaCheckCircle />
                   <span className="font-semibold text-xs sm:text-sm">Your Current Bid</span>
                 </div>
-                <p className="text-2xl sm:text-3xl font-bold text-white">₹{userBid.amount}</p>
-                <p className="text-xs text-gray-400 mt-1">You can update your bid anytime</p>
+                <p className="text-2xl sm:text-3xl font-bold text-white">₹{userBid.amount.toLocaleString()}</p>
+                <p className="text-xs text-gray-400 mt-1">You can update or remove your bid</p>
               </div>
             )}
           </div>

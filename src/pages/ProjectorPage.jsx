@@ -5,7 +5,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useEventState } from '../hooks/useEventState';
 import { useProjects } from '../hooks/useProjects';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { FaTrophy, FaMicrophone, FaClock, FaChartBar, FaUsers, FaFire } from 'react-icons/fa';
+import { FaTrophy, FaMicrophone, FaClock, FaChartBar, FaUsers, FaFire, FaRupeeSign, FaChartLine } from 'react-icons/fa';
 
 export default function ProjectorPage() {
   const { eventState, loading: stateLoading } = useEventState();
@@ -151,7 +151,7 @@ export default function ProjectorPage() {
   return (
     <div className="space-y-4 sm:space-y-6 md:space-y-8 px-4 sm:px-0">
       {/* Enactus Branding Header */}
-      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4 border border-yellow-400/30">
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-3">
             <img 
@@ -165,16 +165,16 @@ export default function ProjectorPage() {
             />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-black">Enactus Orientation 2025</h1>
-            <p className="text-sm sm:text-base text-black text-opacity-70">Live Bidding Competition</p>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">Enactus Orientation 2025</h1>
+            <p className="text-sm sm:text-base text-gray-400">Live Bidding Competition</p>
           </div>
         </div>
         <div className="text-center sm:text-right">
-          <div className="flex items-center gap-2 justify-center sm:justify-end text-black text-opacity-70 text-sm">
-            <FaChartBar />
+          <div className="flex items-center gap-2 justify-center sm:justify-end text-gray-400 text-sm">
+            <FaChartLine />
             Projects
           </div>
-          <div className="text-2xl sm:text-3xl font-bold text-black">{sortedProjects.length}</div>
+          <div className="text-2xl sm:text-3xl font-bold text-yellow-400">{sortedProjects.length}</div>
         </div>
       </div>
 
@@ -218,53 +218,56 @@ export default function ProjectorPage() {
       </div>
 
       {/* Current Pitch Highlight */}
-      <div className="bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 text-black rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-12 text-center shadow-2xl relative overflow-hidden">
+      <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-12 text-center shadow-2xl relative overflow-hidden border-2 border-yellow-400">
         {/* Animated Background Effect */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white to-transparent animate-pulse"></div>
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-yellow-400 to-transparent animate-pulse"></div>
         </div>
         
         <div className="relative z-10">
           {currentProject ? (
             <>
-              <div className="text-lg sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 uppercase tracking-wider flex items-center justify-center gap-2 sm:gap-3 animate-pulse">
-                <FaMicrophone className="text-xl sm:text-2xl md:text-3xl animate-bounce" />
-                <span>NOW PITCHING</span>
-                <FaMicrophone className="text-xl sm:text-2xl md:text-3xl animate-bounce" />
+              <div className="text-lg sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 uppercase tracking-wider flex items-center justify-center gap-2 sm:gap-3">
+                <FaMicrophone className="text-xl sm:text-2xl md:text-3xl text-yellow-400" />
+                <span className="text-yellow-400">NOW PITCHING</span>
+                <FaMicrophone className="text-xl sm:text-2xl md:text-3xl text-yellow-400" />
               </div>
               <div className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 sm:mb-6 md:mb-8 drop-shadow-lg break-words">
                 {currentProject.name}
               </div>
               {currentProject.description && (
-                <p className="text-base sm:text-lg md:text-xl mb-4 sm:mb-6 text-black/80">
+                <p className="text-base sm:text-lg md:text-xl mb-4 sm:mb-6 text-gray-300">
                   {currentProject.description}
                 </p>
               )}
-              <div className="border-t-2 sm:border-t-4 border-black pt-4 sm:pt-6 mt-4 sm:mt-6">
-                <div className="text-base sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 uppercase tracking-wide">TOTAL BIDS</div>
+              <div className="border-t-2 sm:border-t-4 border-gray-700 pt-4 sm:pt-6 mt-4 sm:mt-6">
+                <div className="text-base sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 uppercase tracking-wide text-gray-400 flex items-center justify-center gap-2">
+                  <FaRupeeSign />
+                  TOTAL BID AMOUNT
+                </div>
                 
                 {/* Animated Bid Amount */}
-                <div className="text-5xl sm:text-7xl md:text-9xl font-extrabold drop-shadow-2xl mb-4">
+                <div className="text-5xl sm:text-7xl md:text-9xl font-extrabold drop-shadow-2xl mb-4 text-yellow-400">
                   ₹{(animatedTotals[currentProject.id] || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
                 </div>
                 
                 {/* Progress Bar */}
                 <div className="max-w-2xl mx-auto mb-4">
-                  <div className="h-4 sm:h-6 bg-black/20 rounded-full overflow-hidden">
+                  <div className="h-4 sm:h-6 bg-gray-700 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-black transition-all duration-1000 ease-out"
+                      className="h-full bg-yellow-400 transition-all duration-1000 ease-out"
                       style={{ 
                         width: `${stats.totalAmount > 0 ? (currentProjectTotal / stats.totalAmount * 100) : 0}%` 
                       }}
                     ></div>
                   </div>
-                  <div className="text-xs sm:text-sm mt-2 text-black/70">
+                  <div className="text-xs sm:text-sm mt-2 text-gray-400">
                     {stats.totalAmount > 0 ? `${(currentProjectTotal / stats.totalAmount * 100).toFixed(1)}% of total bids` : '0% of total bids'}
                   </div>
                 </div>
                 
-                <div className="mt-4 text-sm sm:text-base md:text-lg text-black/70 flex items-center justify-center gap-2">
-                  <FaFire className="text-red-600 animate-pulse" />
+                <div className="mt-4 text-sm sm:text-base md:text-lg text-gray-300 flex items-center justify-center gap-2">
+                  <FaChartBar className="text-yellow-400" />
                   {currentProject.bids?.length || 0} {currentProject.bids?.length === 1 ? 'bid' : 'bids'} placed
                 </div>
 
@@ -287,28 +290,28 @@ export default function ProjectorPage() {
 
               {/* Live Bidding Activity */}
               {recentBids.length > 0 && (
-                <div className="mt-6 border-t-2 border-black/20 pt-6">
-                  <div className="text-base sm:text-lg md:text-xl font-bold mb-4 uppercase tracking-wide flex items-center justify-center gap-2">
-                    <FaFire className="text-red-600 animate-pulse" />
+                <div className="mt-6 border-t-2 border-gray-700 pt-6">
+                  <div className="text-base sm:text-lg md:text-xl font-bold mb-4 uppercase tracking-wide flex items-center justify-center gap-2 text-yellow-400">
+                    <FaChartLine />
                     Recent Bids
                   </div>
                   <div className="space-y-2 max-w-2xl mx-auto">
                     {recentBids.map((bid, index) => (
                       <div 
                         key={`${bid.userId}-${bid.timestamp}`}
-                        className="bg-black/10 rounded-lg p-3 flex items-center justify-between animate-slideInUp"
+                        className="bg-gray-700/50 rounded-lg p-3 flex items-center justify-between animate-slideInUp border border-gray-600"
                         style={{ animationDelay: `${index * 0.1}s` }}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-2xl">👤</span>
+                          <FaUsers className="text-xl text-yellow-400" />
                           <div>
                             <div className="font-bold text-sm sm:text-base">{bid.userName}</div>
                             {bid.isTeamMember && (
-                              <span className="text-xs bg-black text-yellow-400 px-2 py-0.5 rounded">Team</span>
+                              <span className="text-xs bg-yellow-400 text-black px-2 py-0.5 rounded font-semibold">Team</span>
                             )}
                           </div>
                         </div>
-                        <div className="text-xl sm:text-2xl font-bold">₹{bid.amount.toLocaleString()}</div>
+                        <div className="text-xl sm:text-2xl font-bold text-yellow-400">₹{bid.amount.toLocaleString()}</div>
                       </div>
                     ))}
                   </div>
@@ -317,7 +320,7 @@ export default function ProjectorPage() {
             </>
           ) : (
             <>
-              <FaClock className="text-4xl sm:text-5xl md:text-6xl mx-auto mb-4 sm:mb-6 animate-bounce" />
+              <FaClock className="text-4xl sm:text-5xl md:text-6xl mx-auto mb-4 sm:mb-6 text-gray-400" />
               <div className="text-2xl sm:text-3xl md:text-4xl font-bold">Waiting for the next pitch...</div>
             </>
           )}
