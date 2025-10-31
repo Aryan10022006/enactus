@@ -420,7 +420,7 @@ export default function AdminPage({ onLogout }) {
   return (
     <div className="space-y-4 sm:space-y-6 px-4 sm:px-0">
       {/* Admin Header with Logo and Logout */}
-      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-2xl">
+      <div className="bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-2xl border border-yellow-400/20">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl flex items-center justify-center shadow-lg p-2">
@@ -435,8 +435,8 @@ export default function AdminPage({ onLogout }) {
               />
             </div>
             <div>
-              <h1 className="text-xl sm:text-3xl font-bold text-black">Admin Panel</h1>
-              <p className="text-black text-opacity-70 text-sm sm:text-base">Event Control Center</p>
+              <h1 className="text-xl sm:text-3xl font-bold text-white">Admin Panel</h1>
+              <p className="text-gray-400 text-sm sm:text-base">Event Control Center</p>
             </div>
           </div>
           <button
