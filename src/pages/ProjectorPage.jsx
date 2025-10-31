@@ -153,14 +153,14 @@ export default function ProjectorPage() {
       {/* Enactus Branding Header */}
       <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-black rounded-xl flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-3">
             <img 
               src="/images/logo.png" 
               alt="Enactus Logo" 
-              className="w-10 h-10 sm:w-14 sm:h-14 object-contain"
+              className="w-full h-full object-contain"
               onError={(e) => {
                 e.target.style.display = 'none';
-                e.target.parentElement.innerHTML = '<span class="text-xl sm:text-2xl font-bold text-yellow-400">E</span>';
+                e.target.parentElement.innerHTML = '<span class="text-3xl sm:text-4xl font-bold text-yellow-400">E</span>';
               }}
             />
           </div>

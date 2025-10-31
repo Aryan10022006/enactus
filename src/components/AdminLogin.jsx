@@ -30,15 +30,15 @@ export default function AdminLogin({ onLogin }) {
       <div className={`max-w-md w-full ${isShaking ? 'animate-shake' : ''}`}>
         {/* Logo Section */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-yellow-400 rounded-full mb-4 shadow-2xl">
+          <div className="inline-flex items-center justify-center w-28 h-28 bg-white rounded-2xl mb-4 shadow-2xl p-5">
             <img 
               src="/images/logo.png" 
               alt="Enactus Logo" 
-              className="w-20 h-20 object-contain"
+              className="w-full h-full object-contain"
               onError={(e) => {
                 // Fallback if logo not found
                 e.target.style.display = 'none';
-                e.target.parentElement.innerHTML = '<span class="text-4xl font-bold text-black">E</span>';
+                e.target.parentElement.innerHTML = '<span class="text-5xl font-bold text-yellow-400">E</span>';
               }}
             />
           </div>

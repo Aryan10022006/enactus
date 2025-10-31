@@ -185,14 +185,14 @@ export default function AttendeePage() {
         <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 border border-gray-700">
           {/* Logo */}
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-4">
               <img 
                 src="/images/logo.png" 
                 alt="Enactus Logo" 
-                className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+                className="w-full h-full object-contain"
                 onError={(e) => {
                   e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<div class="flex items-center justify-center w-full h-full"><span class="text-2xl sm:text-3xl font-bold text-black">E</span></div>';
+                  e.target.parentElement.innerHTML = '<span class="text-4xl sm:text-5xl font-bold text-yellow-400">E</span>';
                 }}
               />
             </div>
@@ -239,14 +239,14 @@ export default function AttendeePage() {
       <div className="max-w-lg mx-auto px-4">
         <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 text-center border border-gray-700">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-4 animate-pulse">
               <img 
                 src="/images/logo.png" 
                 alt="Enactus Logo" 
-                className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+                className="w-full h-full object-contain"
                 onError={(e) => {
                   e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<div class="flex items-center justify-center w-full h-full"><span class="text-2xl sm:text-3xl font-bold text-black">E</span></div>';
+                  e.target.parentElement.innerHTML = '<span class="text-4xl sm:text-5xl font-bold text-yellow-400">E</span>';
                 }}
               />
             </div>
@@ -268,8 +268,8 @@ export default function AttendeePage() {
       <div className="max-w-lg mx-auto px-4">
         <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 text-center border border-gray-700">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-              <FaClock className="text-3xl sm:text-4xl text-black" />
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-4 animate-pulse">
+              <FaClock className="text-4xl sm:text-5xl text-yellow-400" />
             </div>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-4 flex items-center justify-center gap-2">

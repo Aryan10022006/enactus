@@ -9,15 +9,15 @@ export default function Header() {
     <header className="flex flex-col sm:flex-row items-center justify-between mb-4 sm:mb-8 pb-4 sm:pb-6 border-b border-gray-700 gap-4 animate-fadeIn">
       <div className="flex items-center gap-3 sm:gap-4">
         {/* Logo with premium styling */}
-        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform duration-300 card-hover">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-3 transform hover:scale-110 transition-transform duration-300">
           <img 
             src="/images/logo.png" 
             alt="Enactus Logo" 
-            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+            className="w-full h-full object-contain"
             onError={(e) => {
               // Fallback if logo not found
               e.target.style.display = 'none';
-              e.target.parentElement.innerHTML = '<span class="text-2xl sm:text-3xl font-bold text-black text-shadow">E</span>';
+              e.target.parentElement.innerHTML = '<span class="text-3xl sm:text-4xl font-bold text-yellow-400">E</span>';
             }}
           />
         </div>

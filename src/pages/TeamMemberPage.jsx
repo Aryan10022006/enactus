@@ -152,19 +152,18 @@ function TeamMemberPage({ onLogout }) {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4 py-8">
         <div className="max-w-md w-full">
             <div className="text-center mb-8">
-            <img 
-              src="/images/logo.png" 
-              alt="Enactus Logo" 
-              className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 rounded-full shadow-lg"
-              onError={(e) => {
-                e.target.style.display = 'none';
-                e.target.nextElementSibling.style.display = 'flex';
-              }}
-            />
-            <div 
-              className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-lg hidden items-center justify-center"
-            >
-              <span className="text-4xl font-bold text-gray-900">E</span>
+            <div className="flex justify-center mb-4">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 bg-white rounded-2xl flex items-center justify-center shadow-2xl p-5">
+                <img 
+                  src="/images/logo.png" 
+                  alt="Enactus Logo" 
+                  className="w-full h-full object-contain"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.parentElement.innerHTML = '<span class="text-5xl sm:text-6xl font-bold text-yellow-400">E</span>';
+                  }}
+                />
+              </div>
             </div>
             <div className="bg-yellow-400 text-gray-900 px-4 py-2 rounded-full inline-flex items-center text-sm sm:text-base font-semibold mb-4">
               <FaUsers className="mr-2" />
