@@ -489,6 +489,25 @@ export default function AdminPage({ onLogout }) {
     }
   };
 
+  const toggleLeaderboard = async () => {
+    try {
+      setProcessing(true);
+      const newState = !eventState?.show_leaderboard;
+      
+      await updateDoc(doc(db, `${getEventPath()}/state/state`), {
+        show_leaderboard: newState,
+        current_pitch_id: newState ? null : eventState?.current_pitch_id // Stop pitch when showing leaderboard
+      });
+
+      setStatusMessage(newState ? 'Leaderboard is now visible on projector!' : 'Leaderboard hidden.');
+    } catch (error) {
+      console.error('Error toggling leaderboard:', error);
+      setStatusMessage('Error toggling leaderboard: ' + error.message);
+    } finally {
+      setProcessing(false);
+    }
+  };
+
   const deleteProject = async (projectId, projectName) => {
     if (!window.confirm(`Are you sure you want to delete "${projectName}"?\n\nThis will:\n- Remove the project\n- Return all bid amounts to users' wallets\n- Cannot be undone!`)) {
       return;
@@ -1070,6 +1089,33 @@ export default function AdminPage({ onLogout }) {
             <FaStop />
             End Current Pitch
           </button>
+
+          {/* Leaderboard Toggle */}
+          <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex-1">
+                <h3 className="text-base sm:text-lg font-semibold text-white flex items-center gap-2 mb-2">
+                  <FaTrophy className="text-yellow-400" />
+                  Final Leaderboard
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-400">
+                  Show the final leaderboard with winners on the projector. This will display all pitches ranked by total bids with celebration animations for top 3.
+                </p>
+              </div>
+              <button
+                onClick={toggleLeaderboard}
+                disabled={processing}
+                className={`w-full sm:w-auto px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 text-sm sm:text-base min-h-[44px] ${
+                  eventState?.show_leaderboard
+                    ? 'bg-red-600 hover:bg-red-700 text-white'
+                    : 'bg-yellow-400 hover:bg-yellow-500 text-black'
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
+              >
+                <FaTrophy />
+                {eventState?.show_leaderboard ? 'Hide Leaderboard' : 'Show Leaderboard'}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { useUserData } from '../hooks/useUserData';
 import { useProjects } from '../hooks/useProjects';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { getEventPath } from '../firebase';
-import { FaUser, FaWallet, FaChartLine, FaTrophy, FaCheckCircle, FaUsers } from 'react-icons/fa';
+import { FaUser, FaWallet, FaChartLine, FaTrophy, FaCheckCircle, FaUsers, FaClock } from 'react-icons/fa';
 
 function TeamMemberPage({ onLogout }) {
   const { userId } = useContext(UserContext);
@@ -208,57 +208,7 @@ function TeamMemberPage({ onLogout }) {
     );
   }
 
-  if (!eventState?.registration_open) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4 py-8">
-        <div className="max-w-md w-full">
-          <div className="bg-gray-800 rounded-xl shadow-2xl p-6 sm:p-8 border border-yellow-400/20">
-            <div className="text-center">
-              <img 
-                src="/images/logotab.png" 
-                alt="Enactus Logo" 
-                className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full shadow-lg"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.nextElementSibling.style.display = 'flex';
-                }}
-              />
-              <div 
-                className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-lg hidden items-center justify-center"
-              >
-                <span className="text-3xl font-bold text-gray-900">E</span>
-              </div>
-              <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FaCheckCircle className="text-3xl sm:text-4xl text-gray-900" />
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">You're All Set!</h2>
-              <p className="text-lg sm:text-xl text-yellow-400 font-semibold mb-4">{userData.name}</p>
-              <div className="bg-gray-700 rounded-lg p-4 mb-4">
-                <div className="flex items-center justify-center text-gray-300">
-                  <FaWallet className="mr-2 text-yellow-400" />
-                  <span className="text-base sm:text-lg">Wallet: ₹{userData.wallet}</span>
-                </div>
-              </div>
-              <p className="text-gray-400 text-sm sm:text-base mb-4">
-                Waiting for the event to begin and pitches to start...
-              </p>
-              <div className="text-yellow-400 text-sm sm:text-base flex items-center gap-2">
-                <FaClock />
-                Please wait...
-              </div>
-            </div>
 
-            <button
-              onClick={onLogout}
-              className="w-full mt-6 bg-gray-700 text-gray-300 font-semibold py-2 sm:py-3 px-4 rounded-lg hover:bg-gray-600 transition-all text-sm sm:text-base min-h-[44px]"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   const currentProject = eventState?.current_pitch_id 
     ? projects.find(p => p.id === eventState.current_pitch_id)
