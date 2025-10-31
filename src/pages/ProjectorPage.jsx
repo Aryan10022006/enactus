@@ -142,12 +142,6 @@ export default function ProjectorPage() {
     }
   }, [currentProject]);
 
-  if (stateLoading || projectsLoading) {
-    return <LoadingSpinner message="Loading projector view..." />;
-  }
-
-  const currentProjectTotal = currentProject?.bids?.reduce((sum, bid) => sum + bid.amount, 0) || 0;
-
   // Debug: Log projects data to check if bids are loading
   useEffect(() => {
     console.log('ProjectorPage - Projects data:', projects);
@@ -156,6 +150,12 @@ export default function ProjectorPage() {
       console.log(`Project: ${project.name}, Bids: ${project.bids?.length || 0}, Total: ₹${totalBid}`);
     });
   }, [projects]);
+
+  if (stateLoading || projectsLoading) {
+    return <LoadingSpinner message="Loading projector view..." />;
+  }
+
+  const currentProjectTotal = currentProject?.bids?.reduce((sum, bid) => sum + bid.amount, 0) || 0;
 
   // Show Final Leaderboard if enabled
   if (eventState?.show_leaderboard) {
