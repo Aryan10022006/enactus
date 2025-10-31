@@ -148,60 +148,68 @@ export default function ProjectorPage() {
 
   const currentProjectTotal = currentProject?.bids?.reduce((sum, bid) => sum + bid.amount, 0) || 0;
 
+  // Debug: Log projects data to check if bids are loading
+  useEffect(() => {
+    console.log('ProjectorPage - Projects data:', projects);
+    projects.forEach(project => {
+      const totalBid = project.bids?.reduce((sum, bid) => sum + bid.amount, 0) || 0;
+      console.log(`Project: ${project.name}, Bids: ${project.bids?.length || 0}, Total: ₹${totalBid}`);
+    });
+  }, [projects]);
+
   // Show Final Leaderboard if enabled
   if (eventState?.show_leaderboard) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white px-4 py-6 sm:py-8 relative overflow-hidden">
-        {/* Celebration Background Effect */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `-${Math.random() * 20}%`,
-                animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
-                animationDelay: `${Math.random() * 2}s`,
-                opacity: 0.6
-              }}
-            >
-              {['⭐', '🎉', '🏆', '✨', '🎊'][Math.floor(Math.random() * 5)]}
-            </div>
-          ))}
-        </div>
-
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white px-4 py-6 sm:py-8">
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-10 relative z-10">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <FaTrophy className="text-5xl sm:text-7xl md:text-8xl text-yellow-400 animate-pulse" />
+        <div className="text-center mb-6 sm:mb-10">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="w-2 h-16 bg-yellow-400 rounded-full"></div>
+            <FaTrophy className="text-6xl sm:text-8xl text-yellow-400" />
+            <div className="w-2 h-16 bg-yellow-400 rounded-full"></div>
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold mb-3 sm:mb-4 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent drop-shadow-2xl">
-            CONGRATULATIONS!
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold mb-4 text-yellow-400 tracking-tight">
+            FINAL RESULTS
           </h1>
-          <p className="text-lg sm:text-2xl md:text-3xl text-gray-300 font-semibold">
-            Final Leaderboard - All Pitches
+          <p className="text-xl sm:text-2xl text-gray-300 font-semibold">
+            Pitch Competition Leaderboard
           </p>
+          <div className="mt-4 flex items-center justify-center gap-4 text-gray-400 text-sm sm:text-base">
+            <div className="flex items-center gap-2">
+              <FaChartLine />
+              <span>{sortedProjects.length} Pitches</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
+            <div className="flex items-center gap-2">
+              <FaUsers />
+              <span>{stats.totalParticipants} Participants</span>
+            </div>
+            <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
+            <div className="flex items-center gap-2">
+              <FaRupeeSign />
+              <span>₹{stats.totalAmount.toLocaleString()} Total</span>
+            </div>
+          </div>
         </div>
 
         {/* Leaderboard Table */}
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="bg-gray-800/90 backdrop-blur rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden border-2 border-yellow-400/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-700">
             {/* Table Header */}
-            <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 px-4 sm:px-8 py-4 sm:py-6">
-              <div className="grid grid-cols-12 gap-2 sm:gap-4 text-black font-bold text-sm sm:text-lg md:text-xl">
+            <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 px-6 sm:px-8 py-5">
+              <div className="grid grid-cols-12 gap-4 text-black font-bold text-base sm:text-xl">
                 <div className="col-span-1 text-center">RANK</div>
-                <div className="col-span-6 sm:col-span-7">PITCH</div>
+                <div className="col-span-6 sm:col-span-7">PITCH NAME</div>
                 <div className="col-span-2 text-center">BIDS</div>
-                <div className="col-span-3 sm:col-span-2 text-right">TOTAL</div>
+                <div className="col-span-3 sm:col-span-2 text-right">TOTAL AMOUNT</div>
               </div>
             </div>
 
             {/* Leaderboard Entries */}
             <div className="divide-y divide-gray-700">
               {sortedProjects.length === 0 ? (
-                <div className="px-4 sm:px-8 py-8 sm:py-12 text-center text-gray-400 text-base sm:text-xl">
-                  No pitches found
+                <div className="px-8 py-12 text-center text-gray-400 text-xl">
+                  No pitches available
                 </div>
               ) : (
                 sortedProjects.map((project, index) => {
@@ -209,59 +217,41 @@ export default function ProjectorPage() {
                   const bidCount = project.bids?.length || 0;
                   const isTop3 = index < 3;
                   
-                  // Medal colors and sizes
-                  const rankStyles = {
-                    0: { 
-                      bg: 'bg-gradient-to-r from-yellow-400 to-yellow-500',
-                      text: 'text-yellow-900',
-                      medal: '🥇',
-                      scale: 'scale-110',
-                      glow: 'shadow-2xl shadow-yellow-400/50'
-                    },
-                    1: { 
-                      bg: 'bg-gradient-to-r from-gray-300 to-gray-400',
-                      text: 'text-gray-900',
-                      medal: '🥈',
-                      scale: 'scale-105',
-                      glow: 'shadow-xl shadow-gray-400/40'
-                    },
-                    2: { 
-                      bg: 'bg-gradient-to-r from-orange-400 to-orange-500',
-                      text: 'text-orange-900',
-                      medal: '🥉',
-                      scale: 'scale-105',
-                      glow: 'shadow-xl shadow-orange-400/40'
-                    }
+                  // Rank styling for top 3
+                  const rankColors = {
+                    0: 'text-yellow-400',  // Gold
+                    1: 'text-gray-300',     // Silver
+                    2: 'text-orange-400'    // Bronze
                   };
-
-                  const style = rankStyles[index] || {};
+                  
+                  const bgColors = {
+                    0: 'bg-yellow-400/10 border-l-4 border-yellow-400',
+                    1: 'bg-gray-300/10 border-l-4 border-gray-300',
+                    2: 'bg-orange-400/10 border-l-4 border-orange-400'
+                  };
 
                   return (
                     <div
                       key={project.id}
-                      className={`px-4 sm:px-8 py-4 sm:py-6 transition-all ${
-                        isTop3 
-                          ? `${style.bg} ${style.text} ${style.scale} ${style.glow} animate-pulse` 
-                          : 'bg-gray-800/50 hover:bg-gray-700/50 text-white'
+                      className={`px-6 sm:px-8 py-5 transition-all hover:bg-gray-700/50 ${
+                        isTop3 ? bgColors[index] : 'border-l-4 border-transparent'
                       }`}
                     >
-                      <div className="grid grid-cols-12 gap-2 sm:gap-4 items-center text-sm sm:text-base md:text-xl">
+                      <div className="grid grid-cols-12 gap-4 items-center text-sm sm:text-lg">
                         {/* Rank */}
-                        <div className="col-span-1 text-center font-extrabold">
-                          {isTop3 ? (
-                            <span className="text-3xl sm:text-5xl">{style.medal}</span>
-                          ) : (
-                            <span className="text-xl sm:text-3xl">{index + 1}</span>
-                          )}
+                        <div className="col-span-1 text-center">
+                          <div className={`text-3xl sm:text-4xl font-extrabold ${isTop3 ? rankColors[index] : 'text-gray-500'}`}>
+                            {index + 1}
+                          </div>
                         </div>
 
                         {/* Project Name & Description */}
                         <div className="col-span-6 sm:col-span-7">
-                          <div className={`font-bold text-base sm:text-xl md:text-2xl mb-1 ${isTop3 ? 'animate-bounce' : ''}`}>
+                          <div className={`font-bold text-lg sm:text-2xl mb-1 ${isTop3 ? 'text-yellow-400' : 'text-white'}`}>
                             {project.name}
                           </div>
                           {project.description && (
-                            <div className={`text-xs sm:text-sm md:text-base ${isTop3 ? 'opacity-80' : 'text-gray-400'}`}>
+                            <div className="text-sm text-gray-400 line-clamp-2">
                               {project.description}
                             </div>
                           )}
@@ -269,18 +259,21 @@ export default function ProjectorPage() {
 
                         {/* Bid Count */}
                         <div className="col-span-2 text-center">
-                          <div className={`font-bold text-lg sm:text-2xl md:text-3xl ${isTop3 ? '' : 'text-yellow-400'}`}>
+                          <div className="font-bold text-2xl sm:text-3xl text-white">
                             {bidCount}
                           </div>
-                          <div className={`text-xs sm:text-sm ${isTop3 ? 'opacity-70' : 'text-gray-500'}`}>
+                          <div className="text-xs text-gray-500 uppercase">
                             {bidCount === 1 ? 'bid' : 'bids'}
                           </div>
                         </div>
 
                         {/* Total Amount */}
                         <div className="col-span-3 sm:col-span-2 text-right">
-                          <div className={`font-extrabold text-lg sm:text-2xl md:text-3xl ${isTop3 ? '' : 'text-yellow-400'}`}>
-                            ₹{totalBid.toLocaleString()}
+                          <div className="flex items-center justify-end gap-1">
+                            <FaRupeeSign className="text-yellow-400 text-lg" />
+                            <span className="font-extrabold text-2xl sm:text-3xl text-yellow-400">
+                              {totalBid.toLocaleString()}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -291,62 +284,16 @@ export default function ProjectorPage() {
             </div>
           </div>
 
-          {/* Summary Stats */}
-          <div className="mt-6 sm:mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6">
-            <div className="bg-gray-800/80 backdrop-blur rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center border border-gray-700">
-              <FaChartLine className="text-3xl sm:text-4xl text-blue-400 mx-auto mb-2" />
-              <div className="text-xl sm:text-3xl font-bold text-white">{sortedProjects.length}</div>
-              <div className="text-xs sm:text-sm text-gray-400">Total Pitches</div>
-            </div>
-            <div className="bg-gray-800/80 backdrop-blur rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center border border-gray-700">
-              <FaUsers className="text-3xl sm:text-4xl text-purple-400 mx-auto mb-2" />
-              <div className="text-xl sm:text-3xl font-bold text-white">{stats.totalParticipants}</div>
-              <div className="text-xs sm:text-sm text-gray-400">Participants</div>
-            </div>
-            <div className="bg-gray-800/80 backdrop-blur rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center border border-gray-700">
-              <FaFire className="text-3xl sm:text-4xl text-orange-400 mx-auto mb-2" />
-              <div className="text-xl sm:text-3xl font-bold text-white">{stats.totalBids}</div>
-              <div className="text-xs sm:text-sm text-gray-400">Total Bids</div>
-            </div>
-            <div className="bg-gray-800/80 backdrop-blur rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center border border-gray-700">
-              <FaTrophy className="text-3xl sm:text-4xl text-yellow-400 mx-auto mb-2" />
-              <div className="text-xl sm:text-3xl font-bold text-white">₹{stats.totalAmount.toLocaleString()}</div>
-              <div className="text-xs sm:text-sm text-gray-400">Total Amount</div>
-            </div>
-          </div>
-
           {/* Footer Message */}
-          <div className="mt-6 sm:mt-10 text-center">
-            <p className="text-xl sm:text-3xl md:text-4xl font-bold text-yellow-400 mb-2">
-              Thank You for Participating! 🎉
+          <div className="mt-10 text-center">
+            <p className="text-2xl sm:text-4xl font-bold text-white mb-2">
+              Thank You for Participating!
             </p>
-            <p className="text-base sm:text-xl text-gray-400">
+            <p className="text-lg sm:text-xl text-gray-400">
               Enactus Orientation 2025
             </p>
           </div>
         </div>
-
-        <style jsx>{`
-          @keyframes float {
-            0%, 100% {
-              transform: translateY(0) rotate(0deg);
-              opacity: 0;
-            }
-            10% {
-              opacity: 1;
-            }
-            90% {
-              opacity: 1;
-            }
-            100% {
-              transform: translateY(100vh) rotate(360deg);
-              opacity: 0;
-            }
-          }
-          .animate-float {
-            animation: float 6s ease-in-out infinite;
-          }
-        `}</style>
       </div>
     );
   }

@@ -322,6 +322,18 @@ export default function AttendeePage() {
         </div>
       </div>
 
+      {/* Welcome Message */}
+      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-xl">
+        <div className="text-center">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-black mb-2">
+            Welcome to the Pitch Battle! 🎯
+          </h2>
+          <p className="text-sm sm:text-base text-black/80 font-semibold">
+            Place your bids on the pitches you believe in. May the best pitch win!
+          </p>
+        </div>
+      </div>
+
       {/* Bidding Area */}
       {currentProject ? (
         <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-2xl border border-yellow-400/30">
